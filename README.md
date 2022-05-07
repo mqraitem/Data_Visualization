@@ -12,6 +12,7 @@ Preform 3D data visualization along with basic statstical analysis such as:
 **Run**:
 
 Please have Python 3.x installed and then run:
-  $python3 display.py
-  
- 
+
+```console
+$ python3 display.py
+```
