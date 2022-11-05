@@ -13,5 +13,5 @@ Data Analysis and Visualization tool in Python. The tool is able to preform 3D d
 Please have Python 3.x installed and then run:
 
 ```console
-$ python3 display.py
+python display.py
 ```
