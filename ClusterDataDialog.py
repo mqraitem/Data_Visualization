@@ -1,14 +1,9 @@
-# Maan Qraitem 
-# CS 251
-
 import tkinter as tk
 from tkinter import filedialog
 from tkinter import messagebox
 
-
 ###############################################################################
 # Dialog for displaying information about the cluster data. 	 
-# 							  
 ###############################################################################
 
 class ClusterDataDialog(tk.Toplevel):
@@ -19,21 +14,13 @@ class ClusterDataDialog(tk.Toplevel):
 		self.transient(parent)
 
 		self.title("Clustering Data")
-
 		self.codes = codes.reshape(codes.shape[0]).tolist()
-
 		self.codebooks = codebooks 
-
 		self.errors = errors 
-
 		self.quality = quality 
-
 		self.K = self.codebooks.shape[0] 
-
 		self.cancelled = True
-
 		self.parent = parent
-
 		self.result = []
 
 		body = tk.Frame(self)
@@ -41,18 +28,13 @@ class ClusterDataDialog(tk.Toplevel):
 		body.pack(padx=5, pady=5)
 
 		self.buttonbox()
-
 		self.grab_set()
-
 		self.protocol("WM_DELETE_WINDOW", self.cancel)
-
 		self.geometry("+%d+%d" % (parent.winfo_rootx()+50,
 									parent.winfo_rooty()+50))
 
 		self.wait_window(self)
-
 		self.binhisto = None
-
 
 	def listToString(self, mean): 
 		final = "("
@@ -63,10 +45,11 @@ class ClusterDataDialog(tk.Toplevel):
 		return final
 
 
-	#Builds the entry widget. 
-	#Returns the widget to set it as initial focus. 
 	def body(self, master):
-
+		'''
+		* Builds the entry widget. 
+		* Returns the widget to set it as initial focus. 
+		'''
 		frame = tk.Frame(master)
 
 		Labels = []
@@ -89,9 +72,8 @@ class ClusterDataDialog(tk.Toplevel):
 		frame.grid()
 
 
-    #Set up the standard (OK, Cancel) buttons. 
 	def buttonbox(self):
-
+		'''Set up the standard (OK, Cancel) buttons.'''
 		box = tk.Frame(self)
 
 		w = tk.Button(box, text="OK", width=10, command=self.ok, default=tk.ACTIVE)
@@ -104,13 +86,10 @@ class ClusterDataDialog(tk.Toplevel):
 
 		box.pack()
 
-	#Handles pressing the Ok button. 
-	#if the inputs was validated: destroyes the window and call cancel/apply. 
-	#otherwise, set the focus back to entry widget. 
 	def ok(self, event=None):
-
+		'''	#Handles pressing the Ok button.'''
 		if not self.validate():
-			self.initial_focus.focus_set() # put focus back
+			self.initial_focus.focus_set() #put focus back
 			return
 
 		self.withdraw()
@@ -121,22 +100,14 @@ class ClusterDataDialog(tk.Toplevel):
 		self.cancel()
 
 
-	#destroys the dialog and reset the focus to parent window. 
 	def cancel(self, event=None):
-
-		# put focus back to the parent window
+		'''Destroys the dialog and reset the focus to parent window.'''
 		self.parent.focus_set()
 		self.destroy()
 
-
-	#Validates the input in the entry widget: 
-	#if not integer or out of range --> returns 0 
-	#Otherwise, returns 1. 
 	def validate(self):
 		return 1
 
-    #The method is called after validate. 
-    #Update the numPoints and cancelled fields accordingly.
 	def apply(self):
 		self.cancelled = False
 

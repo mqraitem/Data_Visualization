@@ -1,7 +1,3 @@
-# Maan Qraitem 
-# CS 251
-# Project 6 
-
 import tkinter as tk
 from tkinter import filedialog
 from tkinter import messagebox
@@ -21,7 +17,6 @@ from ClusterDialog import ClusterDialog
 from ClusterAxesDialog import ClusterAxesDialog
 from ClusterDataDialog import ClusterDataDialog
 
-# create a class to build and manage the display
 class DisplayApp:
 
 	def __init__(self, width, height):
@@ -150,7 +145,7 @@ class DisplayApp:
 #######################################################
 #-Handles cleaning and clearing 
 #	- clean data for replotting
-#	- handles deleteing an entry 
+#	- handles deleting an entry 
 #	- deletes one entry 
 # 	- deletes all entries
 #######################################################
@@ -182,7 +177,6 @@ class DisplayApp:
 		self.lrObject[filename] = []
 		self.lrPoints[filename] = []
 
-	#delete a data entry in the listbox and clears any other dict/lists entries that hold relevant values. 
 	def delete_entry(self, filename): 
 
 		for line in self.lrObject[filename]: 
@@ -223,7 +217,6 @@ class DisplayApp:
 			self.ClusterAnalysis.delete(i)
 
 
-	#handles deleteing a PCA analysis. 
 	def handleDeletePCAEntry(self): 
 		
 		if len(self.PCAbox.curselection()) == 0:
@@ -238,7 +231,6 @@ class DisplayApp:
 		del self.PCAanalysis[filename]
 		self.PCAbox.delete(self.PCAbox.curselection()[0])
 
-	#handles deleteing a PCA analysis. 
 	def handleDeleteClusterEntry(self): 
 		
 		if len(self.clusterListbox.curselection()) == 0:
@@ -254,7 +246,6 @@ class DisplayApp:
 		self.clusterListbox.delete(self.clusterListbox.curselection()[0])
 
 
-	#handles clicking the button the preforms the entry deletion. 
 	def handleDeleteEntry(self):
 
 		if len(self.dataOpened.curselection()) == 0:
@@ -268,7 +259,6 @@ class DisplayApp:
 		self.delete_entry(filename)
 		self.dataOpened.delete(self.dataOpened.curselection()[0])
 
-	#handles pressing the button the preforms delete all.
 	def handleDeleteEverything(self): 
 
 		for i, filename in enumerate(self.dataOpened.get(0, tk.END)):

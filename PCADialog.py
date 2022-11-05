@@ -1,10 +1,6 @@
-# Maan Qraitem 
-# CS 251
-
 import tkinter as tk
 from tkinter import filedialog
 from tkinter import messagebox
-
 
 
 ###############################################################################
@@ -63,8 +59,6 @@ class PCADialog(tk.Toplevel):
 	def getNumHisto(self):
 		return self.binhisto
 
-	#Builds the entry widget. 
-	#Returns the widget to set it as initial focus. 
 	def body(self, master):
 
 		frame = tk.Frame(master)
@@ -83,7 +77,6 @@ class PCADialog(tk.Toplevel):
 		return self.listbox
 
 
-    #Set up the standard (OK, Cancel) buttons. 
 	def buttonbox(self):
 
 		box = tk.Frame(self)
@@ -98,9 +91,6 @@ class PCADialog(tk.Toplevel):
 
 		box.pack()
 
-	#Handles pressing the Ok button. 
-	#if the inputs was validated: destroyes the window and call cancel/apply. 
-	#otherwise, set the focus back to entry widget. 
 	def ok(self, event=None):
 
 		if not self.validate():
@@ -115,11 +105,8 @@ class PCADialog(tk.Toplevel):
 		self.cancel()
 
 
-	#destroys the dialog and reset the focus to parent window. 
 	def cancel(self, event=None):
-
-		# put focus back to the parent window
-		self.parent.focus_set()
+		self.parent.focus_set()	# put focus back to the parent window
 		self.destroy()
 
 
@@ -130,9 +117,6 @@ class PCADialog(tk.Toplevel):
 			for i in listbox.curselection(): 
 				self.result.append(self.headers[i])
 
-	#Validates the input in the entry widget: 
-	#if not integer or out of range --> returns 0 
-	#Otherwise, returns 1. 
 	def validate(self):
 		if len(self.listbox.curselection()) == 0:
 			tk.messagebox.showerror(
@@ -147,11 +131,8 @@ class PCADialog(tk.Toplevel):
 				"Please select only five entries"
 				)
 			return 0
-
 		return 1
 
-    #The method is called after validate. 
-    #Update the numPoints and cancelled fields accordingly.
 	def apply(self):
 		self.getSelections(self.listbox)
 		self.cancelled = False

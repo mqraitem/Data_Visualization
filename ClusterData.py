@@ -1,8 +1,3 @@
-#Maan Qraitem 
-#Cluster Data class 
-
-
-
 from data import Data
 
 class ClusterData(Data): 
@@ -27,7 +22,6 @@ class ClusterData(Data):
 		for i in range(self.cols): 
 			self.types.append("numeric")
 			self.header2col[self.headers[i]] = i; 
-
 
 	def getCodeBooks(self): 
 		return self.codebooks 

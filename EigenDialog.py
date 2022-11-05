@@ -1,7 +1,3 @@
-# Maan Qraitem 
-# CS 251
-# Project 6 
-
 import tkinter as tk
 from tkinter import filedialog
 from tkinter import messagebox
@@ -57,9 +53,6 @@ class EigenDialog(tk.Toplevel):
 
 		self.wait_window(self)
 
-
-	#Builds the entry widget. 
-	#Returns the widget to set it as initial focus. 
 	def body(self, master):
 
 		frame = tk.Frame(master)
@@ -86,7 +79,6 @@ class EigenDialog(tk.Toplevel):
 		frame.grid()
 
 
-    #Set up the standard (OK, Cancel) buttons. 
 	def buttonbox(self):
 
 		box = tk.Frame(self)
@@ -101,9 +93,6 @@ class EigenDialog(tk.Toplevel):
 
 		box.pack()
 
-	#Handles pressing the Ok button. 
-	#if the inputs was validated: destroyes the window and call cancel/apply. 
-	#otherwise, set the focus back to entry widget. 
 	def ok(self, event=None):
 
 		if not self.validate():
@@ -118,22 +107,15 @@ class EigenDialog(tk.Toplevel):
 		self.cancel()
 
 
-	#destroys the dialog and reset the focus to parent window. 
 	def cancel(self, event=None):
 
 		# put focus back to the parent window
 		self.parent.focus_set()
 		self.destroy()
 
-
-	#Validates the input in the entry widget: 
-	#if not integer or out of range --> returns 0 
-	#Otherwise, returns 1. 
 	def validate(self):
 		return 1
 
-    #The method is called after validate. 
-    #Update the numPoints and cancelled fields accordingly.
 	def apply(self):
 		self.cancelled = False
 

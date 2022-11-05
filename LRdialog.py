@@ -1,8 +1,3 @@
-# Maan Qraitem 
-# CS 251
-# Project 6 
-
-
 import tkinter as tk
 from tkinter import filedialog
 from tkinter import messagebox
@@ -73,8 +68,6 @@ class LinearRgressionDialog(tk.Toplevel):
 	def getNumHisto(self):
 		return self.binhisto
 
-	#Builds the entry widget. 
-	#Returns the widget to set it as initial focus. 
 	def body(self, master):
 
 		frame1 = tk.Frame(master)
@@ -99,8 +92,6 @@ class LinearRgressionDialog(tk.Toplevel):
 
 		return self.listboxX
 
-
-    #Set up the standard (OK, Cancel) buttons. 
 	def buttonbox(self):
 
 		box = tk.Frame(self)
@@ -115,9 +106,6 @@ class LinearRgressionDialog(tk.Toplevel):
 
 		box.pack()
 
-	#Handles pressing the Ok button. 
-	#if the inputs was validated: destroyes the window and call cancel/apply. 
-	#otherwise, set the focus back to entry widget. 
 	def ok(self, event=None):
 
 		if not self.validate():
@@ -126,19 +114,14 @@ class LinearRgressionDialog(tk.Toplevel):
 
 		self.withdraw()
 		self.update_idletasks()
-
 		self.apply()
-
 		self.cancel()
 
-
-	#destroys the dialog and reset the focus to parent window. 
 	def cancel(self, event=None):
 
 		# put focus back to the parent window
 		self.parent.focus_set()
 		self.destroy()
-
 
 	def getSelections(self, listbox): 
 		if len(listbox.curselection()) == 0: 
@@ -146,9 +129,6 @@ class LinearRgressionDialog(tk.Toplevel):
 		else:
 			return self.headers[listbox.curselection()[0]] 
 
-	#Validates the input in the entry widget: 
-	#if not integer or out of range --> returns 0 
-	#Otherwise, returns 1. 
 	def validate(self):
 		if len(self.listboxX.curselection()) == 0 or len(self.listboxY.curselection()) == 0:
 			tk.messagebox.showerror(
@@ -158,8 +138,6 @@ class LinearRgressionDialog(tk.Toplevel):
 			return 0
 		return 1
 
-    #The method is called after validate. 
-    #Update the numPoints and cancelled fields accordingly.
 	def apply(self):
 		self.result.append(self.getSelections(self.listboxX))
 		self.result.append(self.getSelections(self.listboxY))

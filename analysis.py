@@ -1,7 +1,3 @@
-#Maan Qraitem
-#CS 251 
-#Analysis 
-
 import numpy as np 
 from scipy import stats
 import scipy.cluster.vq as vq
@@ -11,7 +7,6 @@ import ClusterData
 import random as rand
 import math
 
-#return the a list of lists containing [min, max]
 def data_range(headers, data):
 	extracted = data.get_LimitedHeaders(headers)
 	Allmin = extracted.min(axis = 0)
@@ -19,48 +14,40 @@ def data_range(headers, data):
 	final = [[Allmin[0, i], Allmax[0, i]] for i in range(Allmin.shape[1])]
 	return final
 
-#return the mean at each header 
 def mean(headers, data): 
 	extracted = data.get_LimitedHeaders(headers)
 	return [x[0, 0] for x in np.mean(extracted, axis = 0).T]
 
-#return the standard deviation at each header
 def stdev(headers, data): 
 	extracted = data.get_LimitedHeaders(headers)
 	return [x[0, 0] for x in np.std(extracted, axis = 0).T]
 
-#normalize each column seperately
 def normalize_columns_separately(headers, data):
 	extracted = data.get_LimitedHeaders(headers)
 	extracted = extracted - extracted.min(axis = 0)
 	extracted = extracted/(extracted.max(axis = 0))
 	return extracted
 
-#normalize the columns together 
 def normalize_columns_together(headers, data):
 	extracted = data.get_LimitedHeaders(headers)
 	extracted = extracted - np.amin(extracted)
 	extracted = np.divide(extracted, np.amax(extracted))
 	return extracted
 
-#calculate the median at each header. 
 def median(headers, data):
 	extracted = data.get_LimitedHeaders(headers)
 	return np.median(extracted, axis = 0) 
 
-#calculate the range at each header. 
 def get_range(headers, data):
 	extracted = data.get_LimitedHeaders(headers)
 	return np.ptp(extracted,axis=0)
 
-#preforms linear regression on a single independant variable.
 def single_linear_regression(data_obj, ind_var, dep_var):
 	X = np.array(data_obj.get_LimitedHeaders([ind_var]))
 	Y = np.array(data_obj.get_LimitedHeaders([dep_var]))
 	slope, intercept, r_value, p_value, std_err = stats.linregress(X.reshape(X.shape[0]), Y.reshape(X.shape[0]))	
 	return (slope, intercept, r_value, p_value, std_err, X.min(axis = 0), X.max(axis = 0), Y.min(axis = 0), Y.max(axis = 0))
 
-#preforms linear regression on multiple independant variables
 def linear_regression(data_obj, ind, dep):
 
 	y = data_obj.get_LimitedHeaders([dep])
@@ -88,8 +75,8 @@ def linear_regression(data_obj, ind, dep):
 
 
 
-# Calculates the PCA for the selected headers. 
 def pca(d, headers, normalize=True):
+	'''Calculates the PCA for the selected headers.'''
 	if normalize:
 		A = normalize_columns_separately(headers, d)
 
@@ -106,10 +93,8 @@ def pca(d, headers, normalize=True):
 
 	return PCAData.PCAData(projected_data, V, eigenvalues, m, headers)
 
-
-
-# computes the kmeans clutser and represent that by returning codebook, codes, and representation error.
 def kmeans_numpy( d, headers, K, whiten = True):
+	'''computes the kmeans clutser and represent that by returning codebook, codes, and representation error.'''
 
 	A = d.get_LimitedHeaders(headers)
 	W = vq.whiten(A)
@@ -121,8 +106,6 @@ def kmeans_numpy( d, headers, K, whiten = True):
 
 
 def kmeans_init(A, K):
-	# Hint: generate a list of indices then shuffle it and pick K
-	# Hint: Probably want to check for error cases (e.g. # data points < K)
 
 	pickfrom = A[:]
 	picks = [] 
@@ -140,8 +123,6 @@ def kmeans_init(A, K):
 
 	return(final)
 
-
-#computes L2 distance
 def L2_distance(codebook, A): 
 	diff = codebook - A
 	squared = np.square(diff) 
@@ -149,15 +130,11 @@ def L2_distance(codebook, A):
 	square_root = np.sqrt(summed)
 	return square_root
 
-#computes L1 distance
 def L1_distance(codebook, A): 
 	diff = np.abs(codebook - A)
 	summed = np.sum(diff, axis = 1)
 	return summed
 
-
-
-#computes the mean distance of point i from every point in the same cluster as i.
 def compute_ai(A, Point_index, codes):
 	indices = [i for i, x in enumerate(codes) if int(x) == int(codes[Point_index])]
 	a_i = 0 
@@ -167,8 +144,6 @@ def compute_ai(A, Point_index, codes):
 	
 	return (a_i/len(indices))
 
-
-#computes the mean distance of point i from every point in the second nearst cluster
 def compute_bi(A, Point_index, codes, codebook): 
 
 	distance = L2_distance(codebook, A[Point_index,:]) 
@@ -187,7 +162,6 @@ def compute_bi(A, Point_index, codes, codebook):
 	return (b_i/len(indices))
 
 
-#computes the silhouette_average over all data points
 def silhouette_average(d, headers, codebook, codes):
 	A = d.get_LimitedHeaders(headers)
 	N = A.shape[0]
@@ -200,8 +174,6 @@ def silhouette_average(d, headers, codebook, codes):
 
 	return final/N
 
-
-#Classify data points according to their closest clusters. 
 def kmeans_classify(A, codebook, measure):
 
 	distances = np.zeros((A.shape[0], codebook.shape[0]))
@@ -221,27 +193,21 @@ def kmeans_classify(A, codebook, measure):
 
 	return (ids, distances)
 
-# Given a data matrix A and a set of K initial means, compute the optimal
-# cluster means for the data and an ID and an error for each data point
 def kmeans_algorithm(A, means, measure):
-	# set up some useful constants
-	MIN_CHANGE = 1e-7     # might want to make this an optional argument
-	MAX_ITERATIONS = 100  # might want to make this an optional argument
+
+	MIN_CHANGE = 1e-7     
+	MAX_ITERATIONS = 100  
 	D = means.shape[1]    # number of dimensions
 	K = means.shape[0]    # number of clusters
 	N = A.shape[0]        # number of data points
 
 	# iterate no more than MAX_ITERATIONS
-
-
 	for i in range(MAX_ITERATIONS): 
 
 		codes, distances = kmeans_classify(A, means, measure)
-
-
+		
 		newmeans = np.zeros((K, D))
 		counts = np.zeros((K, 1))
-
 		A = np.array(A)
 
 		for num in range(N): 
@@ -263,7 +229,6 @@ def kmeans_algorithm(A, means, measure):
 
 	# return the means, codes, and errors
 	return (means, codes, errors)
-
 
 def kmeans(d, headers, K, measure, whiten=True):
 	'''Takes in a Data object, a set of headers, and the number of clusters to create

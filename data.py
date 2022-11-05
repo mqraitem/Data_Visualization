@@ -1,7 +1,3 @@
-#Maan Qraitem
-#CS251 proj02 
-#Data class
-
 import numpy as np 
 import csv
 from datetime import datetime
@@ -11,7 +7,6 @@ from matplotlib.dates import date2num
 class Data: 
 
 	def __init__(self, filename = None):
-
 		self.headers = [] 
 		self.types = []
 		self.data = []
@@ -23,19 +18,15 @@ class Data:
 		if filename != None: 
 			self.read(filename)
 
-	#strips of white space.
 	def cleanLine(self, line):
 		return [x.strip() for x in line]
 
-	#builds header2col
 	def buildHeader2col(self): 
 		for i in range(len(self.headers)):
 			if self.headers[i] not in self.header2col:
 				self.header2col[self.headers[i]] = i
 
-	#classify the data in the line accordingly. 
 	def cleanData(self, line, row): 
-
 		final = []
 
 		for col in range(len(self.headers)):
@@ -64,14 +55,12 @@ class Data:
 		return final
 
 
-	#cleans out any unaccepted input. 
 	def cleanTypesHeaders(self):
 		skip = [True if x in self.acceptedValues else False for x in self.types]
 		self.types = [x for x in self.types if x in self.acceptedValues]
 		self.headers = [self.headers[x] for x in range(len(self.headers)) if skip[x]]
 
 
-	#reads the csv file and process its content. 
 	def read(self, filename): 
 		with open(filename, 'rU') as fp:
 			reader = csv.reader(fp)
@@ -97,15 +86,12 @@ class Data:
 			self.buildHeader2col()
 			self.data = np.matrix(self.data)
 
-	#returns a numpy matrix with specific columns
 	def get_LimitedHeaders(self, headersList):
 		extracted = [ self.header2col[header] for header in headersList
 					if header in self.headers ]
 
 		return self.data[:, extracted]
 
-
-	#updat the header and type lists (usage in add Column)
 	def updateParams(self, header, type): 
 		self.headers.append(header)
 		self.types.append(type)
@@ -117,8 +103,6 @@ class Data:
 		temp = np.copy(self.data)
 		return np.hstack((temp,np.ones((temp.shape[0],1))))
 		
-	#adds a column to the data. 
-	#classify the data and adds it appropriately. 
 	def addColumn(self, header, type, data):
 
 		if (len(data) == self.rows):
@@ -163,32 +147,24 @@ class Data:
 			print("Incorrect number of rows")
 			quit()
 
-	#return the headers list
 	def get_headers(self): 
 		return self.headers 
 
-	#return the types list
 	def get_types(self): 
 		return self.types
 
-	#return the number of dimensions 
 	def get_num_dimensions(self): 
 		return self.cols 
 
-	#return the number of rows
 	def get_num_points(self): 
 		return self.rows 
 
-	#return a specific row
 	def get_row(self, rowIndex):
 		return self.data[rowIndex, :]
 
-	#return a matrix entry.
 	def get_value(self, header, rowIndex):
 		return self.data[rowIndex, self.header2col[header]]
 
-
-	#returns a strong of the data.
 	def __str__(self): 
 
 		data = ""

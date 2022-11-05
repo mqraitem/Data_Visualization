@@ -1,7 +1,3 @@
-# Maan Qraitem 
-# CS 251
-# PCA data class.
-
 from data import Data
 
 class PCAData(Data):

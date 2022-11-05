@@ -1,10 +1,7 @@
 #Maan Qraitem 
-#CS251 
-#Project 5
 
 import numpy as np
-from math import cos, sin
-
+from math import cos, sin 
 
 class View: 
 	def __init__(self): 
@@ -20,8 +17,6 @@ class View:
 
 		self.reset() 
 
-
-	#resets back the VRC to default values.
 	def reset(self):
 
 		self.vrp = np.matrix([0.5, 0.5, 1])
@@ -35,7 +30,6 @@ class View:
 		self.offset = [400., 50.]
 
 
-	#return a normalized version of the vector. 
 	def normalize_vector(self, vector):
 
 		Vnorm = np.matrix([1., 1., 1.])
@@ -47,8 +41,6 @@ class View:
 
 		return Vnorm
 
-
-	#builds the VTM 
 	def build(self): 
 
 		vtm = np.identity( 4, float )
@@ -126,21 +118,21 @@ class View:
 		self.offset[0] = dx * self.constOffset[0]
 		self.offset[1] = dy * self.constOffset[1]
 
-	#updates the VRP (panning) 
 	def update_vrp_translate(self, delta0, delta1): 
+		'''updates the VRP (panning) '''
 
 		self.vrp[0,0] += self.u[0,0]*delta0 + self.vup[0,0]*delta1
 		self.vrp[0,1] += self.u[0,1]*delta0 + self.vup[0,1]*delta1
 		self.vrp[0,2] += self.u[0,2]*delta0 + self.vup[0,2]*delta1
 
-	#updates the extent (scaling) 
 	def update_extent_scale(self, factor): 
+		'''updates the extent (scaling) '''
 
 		self.extent[0] = factor
 		self.extent[1] = factor 
 
-	#updates the VRC (rotating)
 	def update_vrc_rotate(self, thetaUp, thetaU):
+		'''updates the VRC (rotating)'''
 
 		t1 = np.matrix( [[1, 0, 0, -self.vrp[0, 0] - ((self.extent[2]/2) * self.vpn[0,0])],
 						[0, 1, 0,  -self.vrp[0, 1] - ((self.extent[2]/2) * self.vpn[0,1])],
@@ -179,10 +171,10 @@ class View:
 		self.vpn = np.copy(np.matrix([tvrc[3,0], tvrc[3,1], tvrc[3,2]]))
 		self.vrp = np.copy(np.matrix([tvrc[0,0], tvrc[0,1], tvrc[0,2]]))
 
-	#clones the view object. 
 	def cloneView(self):
+		'''clones the view object.'''
+
 		view = View()
-		
 		view.vrp = np.copy(self.vrp) 
 		view.vpn = np.copy(self.vpn)
 		view.vup = np.copy(self.vup)
